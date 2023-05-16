@@ -1,22 +1,21 @@
+# Start from a minimal Alpine Linux image with the latest version of Go
 FROM golang:1.19-alpine
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Get go mod and sum files
+# Copy the Go module files and download the dependencies
 COPY go.mod go.sum ./
-
-# Get dependencies
 RUN go mod download
 
-# copy source code into app dir 
-COPY cmd/ /app/cmd/
-COPY internal/ /app/internal/
+# Copy the rest of the application source code
+COPY . .
 
-# Build app 
-RUN go build -o ./bin/main /app/cmd/main.go
+# Build the application
+RUN go build -o /app/server ./cmd
 
-# Expose port 8080 to the outside world
+# Expose the port that the server will listen on
 EXPOSE 8080
 
-# Run app
-CMD ["./bin/main"]
+# Start the server when the container starts
+CMD ["/app/server"]
