@@ -3,7 +3,7 @@ FROM golang:1.19-alpine
 WORKDIR /app
 
 # Get go mod and sum files
-COPY go.mod go.sum
+COPY go.mod go.sum ./
 
 # Get dependencies
 RUN go mod download
@@ -20,7 +20,3 @@ EXPOSE 8080
 
 # Run app
 CMD ["./bin/main"]
-
-
-
-
