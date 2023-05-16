@@ -12,7 +12,7 @@ RUN go mod download
 COPY . .
 
 # Build app 
-RUN go build -o ./bin/main ./cmd/api/main.go
+RUN go build -o ./bin/main .
 
 
 # Expose port 8080 to the outside world
