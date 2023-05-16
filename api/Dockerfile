@@ -9,11 +9,11 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # copy source code into app dir 
-COPY . .
+COPY cmd/ /app/cmd/
+COPY internal/ /app/internal/
 
 # Build app 
-RUN go build -o ./bin/main .
-
+RUN go build -o ./bin/main /app/cmd/main.go
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
