@@ -1,38 +1,58 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"net/http"
 
-func (h *Handler) NotImplemented(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "Not Implemented",
-	})
+	"github.com/gofiber/fiber/v2"
+)
+
+func (h *Handler) NotImplemented(c *fiber.Ctx) error {
+	return c.Status(http.StatusNotImplemented).JSON(
+		fiber.Map{
+			"message": fmt.Sprintf("MY Not implemented %s", c.Path()),
+		},
+	)
 }
 
-func (h *Handler) RegisterRoutes(router *gin.Engine) {
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello ROOT",
-		})
-	})
+func (h *Handler) RegisterRoutes(router *fiber.App) {
 	v1 := router.Group("/api/v1")
+	v1.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(http.StatusOK).JSON(fiber.Map{"message": "Greetings from API Root"})
+	})
 
-	users := v1.Group("/users")
+	// User routes
+	users := v1.Group("/users") // api/v1/users
 	{
-		users.POST("/signup", h.NotImplemented)
-		users.POST("/login", h.NotImplemented)
+		users.Post("/signup", h.UserSignup)
+		users.Post("/login", h.NotImplemented)
 
-		users.GET("/:id", h.NotImplemented)
-
-		users.PUT("/:id", h.NotImplemented)
-
-		users.DELETE("/:id", h.NotImplemented)
+		authedUsers := users.Group("/") // api/v1/users
+		{
+			authedUsers.Get("/:id", h.NotImplemented)
+			authedUsers.Put("/:id", h.NotImplemented)
+			authedUsers.Delete("/:id", h.NotImplemented)
+		}
 	}
 
-	wishlist := v1.Group("/wishlist")
+	// Wishlist routes
+	wishlists := v1.Group("/wishlists") // api/v1/wishlists
 	{
-		wishlist.POST("/", h.NotImplemented)
+		wishlists.Get("/:slug", h.NotImplemented)
+		wishlists.Get("/", h.NotImplemented)
 
-		wishlist.GET("/:id", h.NotImplemented)
-		wishlist.GET("/", h.NotImplemented)
+		authedWishlists := wishlists.Group("/") // api/v1/wishlists
+		{
+
+			authedWishlists.Post("/", h.NotImplemented)
+			authedWishlists.Put("/:slug", h.NotImplemented)
+			authedWishlists.Delete("/:slug", h.NotImplemented)
+
+			// Favorite/unfavorite routes for wishlists
+			authedWishlists.Post("/:slug/favorites", h.NotImplemented)
+			authedWishlists.Delete("/:slug/favorites", h.NotImplemented)
+
+		}
+
 	}
 }

@@ -13,7 +13,7 @@ type Wishlist struct {
 	UserId      uint `gorm:"not null"`
 	User        User
 	Items       []Item
-	Tags        []Tag `gorm:"many2many:wishlist_tags;"`
+	Favorites   []User `gorm:"many2many:favorites;"`
 }
 
 func (wl *Wishlist) BeforeCreate(tx *gorm.DB) (err error) {
@@ -36,9 +36,4 @@ type Item struct {
 func (i *Item) BeforeCreate(tx *gorm.DB) (err error) {
 	i.ID = uuid.New()
 	return
-}
-
-type Tag struct {
-	gorm.Model
-	Label string
 }

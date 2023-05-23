@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"listr/store"
+	"github.com/mccune1224/listr/store"
 
 	"github.com/go-playground/validator/v10"
 )

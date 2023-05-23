@@ -1,7 +1,7 @@
 package db
 
 import (
-	"listr/models"
+	"github.com/mccune1224/listr/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -16,9 +16,15 @@ func Connect(dsn string) *gorm.DB {
 	return db
 }
 
-func RunAutoMigrations(db *gorm.DB) {
+func RunAutoMigrations(db *gorm.DB, clean ...bool) {
+	// db.Migrator().DropTable(
+	// 	&models.User{},
+	// 	&models.Follow{},
+	// 	&models.Wishlist{},
+	// )
 	db.AutoMigrate(
 		&models.User{},
+		&models.Follow{},
 		&models.Wishlist{},
 	)
 }

@@ -1,7 +1,7 @@
 package store
 
 import (
-	"listr/models"
+	"github.com/mccune1224/listr/models"
 
 	"gorm.io/gorm"
 )
