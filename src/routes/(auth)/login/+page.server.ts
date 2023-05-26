@@ -76,7 +76,7 @@ export const actions = {
 
         const sessionID = uuid();
         const sessionOK = await SessionStore.hset(sessionID, {
-            userID: dbUser?.id,
+            userId: dbUser?.id,
             email: dbUser?.email,
             username: dbUser?.name
         });

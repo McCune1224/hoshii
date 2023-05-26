@@ -6,6 +6,7 @@
 	<header class="container mx-auto">
 		<div class="sm:mx-auto sm:py-10">
 			<nav
+				data-sveltekit-preload-data="off"
 				class="mx-auto flex items-center justify-between bg-white py-4 sm:rounded-full sm:px-10 sm:text-xl"
 			>
 				<a href="/" class="text-3xl font-bold text-gray-800"> Hoshii [LOGO HERE]</a>
