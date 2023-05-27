@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
-	let password = '';
-	let repeatPassword = '';
 	export let form: ActionData;
 </script>
 

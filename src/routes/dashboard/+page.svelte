@@ -4,11 +4,18 @@
 
 	export let data: PageData;
 
-	onMount(() => {});
+	let user: any;
+	onMount(async () => {
+		const userFetch = await fetch('/api/users/me');
+		user = await userFetch.json();
+	});
 </script>
 
 <div>
 	<h1>HI FROM DASHBOARD</h1>
-    <p>Current User is: {data.currentUser.username}</p>
-    <p>RAW DATA: {JSON.stringify(data)}</p>
+	{#if user}
+		<h2>{JSON.stringify(user)}</h2>
+	{:else}
+		<h2>Loading...</h2>
+	{/if}
 </div>

@@ -1,5 +1,5 @@
 import prisma from '$lib/prisma';
-import { json, fail, error } from '@sveltejs/kit';
+import { json, fail, error, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import type { PageServerLoad, Actions } from './$types';
 import { ValidateFormData } from '$lib/utils/forms';
@@ -44,5 +44,6 @@ export const actions = {
                 name: name as string
             }
         });
+        redirect(301, '/login');
     }
 } satisfies Actions;
