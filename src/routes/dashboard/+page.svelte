@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import { HoshiiAPI } from '$lib/api/client';
 
-	export let data: PageData;
+	const client = new HoshiiAPI();
 
-	let user: any;
+	let user: CurrentUserResponse;
 	onMount(async () => {
-		const userFetch = await fetch('/api/users/me');
-		user = await userFetch.json();
+		user = await client.GetMe();
+		console.log('USER', user);
 	});
 </script>
 
 <div>
 	<h1>HI FROM DASHBOARD</h1>
 	{#if user}
-		<h2>{JSON.stringify(user)}</h2>
+		<h2>Greetings {user.name}</h2>
+        <p>Iunno use this to tweak profile settings or somethin</p>
 	{:else}
 		<h2>Loading...</h2>
 	{/if}

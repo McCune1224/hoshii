@@ -4,7 +4,7 @@ import { json, type Handle } from '@sveltejs/kit';
 export const handle = (async ({ event, resolve }) => {
 	// For right now everything under /api is protected, but maybe later down the line some will be public...
 	const protectedApiRoutes = 'api/';
-	const seshID = event.cookies.get('sessionID');
+	const seshID = event.cookies.get('sessionId');
 
 	if (!seshID && protectedApiRoutes.includes(event.url.pathname)) {
 		return json({

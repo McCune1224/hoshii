@@ -1,13 +1,13 @@
-<script>
-	import '../app.css';
+<script lang="ts">
+	// Your selected Skeleton theme:
+	import '@skeletonlabs/skeleton/themes/theme-vintage.css';
+
+	// This contains the bulk of Skeletons required styles:
+	// NOTE: this will be renamed skeleton.css in the v2.x release.
+	import '@skeletonlabs/skeleton/styles/skeleton.css';
+
+	// Finally, your application's global stylesheet (sometimes labeled 'app.css')
+	import '../app.postcss';
 </script>
 
-<div class="flex h-screen flex-col">
-	<div class="flex-grow">
-		<slot />
-	</div>
-	<footer class="bg-zinc-100 text-center">
-		<p>&copy; 2023 Hoshii. All rights reserved.</p>
-		<p class="text-gray-400">Designed by Arwyn Wyn & Alex McCune</p>
-	</footer>
-</div>
+<slot />
