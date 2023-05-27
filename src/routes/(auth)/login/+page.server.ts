@@ -15,8 +15,9 @@ interface SessionData {
     username: string;
 }
 
-export const load = (async ({ cookies }) => {
+export const load = (async ({ cookies, url }) => {
     // Check if session exists for user
+    const redirectLocation = url.searchParams.get('redirect');
     const sessionCookieID = cookies.get('sessionID');
     if (!sessionCookieID) {
         // No session, proceed with normal client-side rendering
@@ -35,6 +36,9 @@ export const load = (async ({ cookies }) => {
         console.log(await SessionStore.hgetall(sessionCookieID));
         console.log(await SessionStore.ttl(sessionCookieID));
         // Redirect since all the session stuff is now refreshed
+        if (redirectLocation) {
+            throw redirect(301, `/${redirectLocation}`);
+        }
         throw redirect(301, '/dashboard');
     }
 }) satisfies PageServerLoad;

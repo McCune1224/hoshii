@@ -4,10 +4,11 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ cookies }) => {
 	const sessionID = cookies.get('sessionID');
-	//Send user back to login momentairly if they don't have a sessionID
+	console.log('SESSION ID', sessionID);
+	console.log('Session hash', await SessionStore.hgetall(sessionID as string));
 	// Login route should handle a redirect back to the dashboard after a successful login
 	if (!sessionID) {
-		throw redirect(301, '/login?redirect=/dashboard');
+		throw redirect(301, '/login?redirect=dashboard');
 	}
 	const sessionMap = await SessionStore.hgetall(sessionID);
 	//Convert record to a SessionData object

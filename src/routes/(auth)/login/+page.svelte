@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { ActionData } from './$types';
 	export let form: ActionData;
+
+	let redirectPath = $page.url.searchParams.get('redirect');
 </script>
 
 <section class="border-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-200">
+	{#if redirectPath}
+		<div class="bg-yellow-600 p-2 text-white">
+			<p class="text-center">Login to return to last page.</p>
+		</div>
+	{/if}
 	<div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
 		<p class="text-5xl text-yellow-600">LOGO HERE</p>
 		<div
