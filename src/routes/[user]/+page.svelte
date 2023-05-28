@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { HoshiiAPI } from '$lib/api/client';
 	import type { PageServerData } from './$types';
+	import { page } from '$app/stores';
 
 	export let data: PageServerData;
 	const hoshiiClient = new HoshiiAPI();
@@ -13,20 +14,7 @@
 			src="https://pbs.twimg.com/profile_images/1589027795962765312/NzQmfiV9_400x400.jpg"
 			alt="user pfp"
 		/>
-		<h1 class="text-6xl sm:text-8xl">{data.props.userEndpoint}</h1>
+		<h1 class="text-6xl sm:text-8xl">Greetings {data.user.username}</h1>
 	</section>
-	<section>
-		Wishlists
-		{#if data.props.sameUser}
-			<button
-				on:click={async () => {
-					console.log('CLICKED');
-					const res = await hoshiiClient.GetWishlist();
-					console.log(res);
-				}}
-				class=" rounded bg-blue-300 px-4 py-2 font-bold text-white hover:bg-blue-400"
-				>GET WISHLIST</button
-			>
-		{/if}
-	</section>
+	<section>Wishlists</section>
 </div>

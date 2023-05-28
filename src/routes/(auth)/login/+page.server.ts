@@ -27,12 +27,14 @@ export const load = (async ({ cookies, url }) => {
 		});
 		return;
 	}
+	//redirect to user page
 	const seshUser: SessionData = await SessionStore.hgetall(sessionCookieID);
 	throw redirect(301, `/${seshUser?.username}`);
 }) satisfies PageServerLoad;
 
 export const actions = {
 	default: async ({ cookies, request, locals }) => {
+		//get form data
 		const data = await request.formData();
 		const missingFields = ValidateFormData(data, ['email', 'password']);
 		if (missingFields.length > 0) {
@@ -40,11 +42,14 @@ export const actions = {
 		}
 		const email = data.get('email') as string;
 		const password = data.get('password') as string;
+
+		// try to find user in db
 		const dbUser = await prisma.user.findUnique({
 			where: {
 				email
 			}
 		});
+
 		if (!dbUser) {
 			return fail(400, { errors: ['Cannot find Email'] });
 		}
@@ -54,10 +59,12 @@ export const actions = {
 			return fail(400, { errors: ['Invalid Password'] });
 		}
 
+		// other unknown errors
 		if (!dbUser) {
 			throw error(500, 'Failed to fetch user from email');
 		}
 
+		// create session
 		const sessionId = uuid();
 		const sessionOK = await SessionStore.hset(sessionId, {
 			userId: dbUser?.id,
@@ -69,10 +76,10 @@ export const actions = {
 			throw error(500, 'Failed to create session');
 		}
 
+        // setting session includes store session in redis, and setting cookie, and for the app to quickly use set in locals
 		await SessionStore.expire(sessionId, SESSION_EXPIRY);
 		cookies.set('sessionId', sessionId, {
 			path: '/',
-			// 7 days
 			maxAge: SESSION_EXPIRY
 		});
 		locals.activeUser = {

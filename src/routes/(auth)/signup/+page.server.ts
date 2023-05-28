@@ -4,17 +4,15 @@ import bcrypt from 'bcrypt';
 import type { PageServerLoad, Actions } from './$types';
 import { ValidateFormData } from '$lib/utils/forms';
 
-export const load = (async ({ cookies }) => {
-    /* const user = await SessionRedis.get(`session:${cookies.sessionToken}`); */
-    /* return user */
+export const load = (async () => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-    default: async ({ cookies, request }) => {
+    default: async ({ request }) => {
         const data = await request.formData();
         const email = data.get('email');
         const password = data.get('password');
-        const name = data.get('username');
+        const username = data.get('username');
 
         const missingItems = ValidateFormData(data, ['email', 'password', 'username']);
         if (missingItems.length > 0) {
@@ -41,7 +39,7 @@ export const actions = {
             data: {
                 email: email as string,
                 password: passwordHash,
-                name: name as string
+                name: username as string
             }
         });
         redirect(301, '/login');

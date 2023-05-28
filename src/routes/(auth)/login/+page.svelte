@@ -26,12 +26,7 @@
 				<form class="space-y-4 md:space-y-6" method="POST">
 					<label for="email"
 						><span>Email</span>
-						<input 
-                            class="input" 
-                            type="email" 
-                            name="email"
-                            id="email" 
-                            placeholder="email@foo.com" />
+						<input class="input" type="email" name="email" id="email" placeholder="email@foo.com" />
 					</label>
 
 					<label for="password"

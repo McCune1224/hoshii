@@ -3,69 +3,53 @@
 	export let form: ActionData;
 </script>
 
-<section class="border-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-200">
+<section class="">
 	<div class="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-		<p class="text-5xl text-yellow-600">LOGO HERE</p>
-		<div
-			class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0"
-		>
+		<div class="w-full rounded-lg sm:max-w-md md:mt-0 xl:p-0">
 			<div class="space-y-4 p-6 sm:p-8 md:space-y-6">
-				<h1
-					class="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl"
-				>
-					Make an Account for Hoshii
-				</h1>
 				{#if form?.errors}
-					<div>
+					<aside class="variant-filled-error alert">
 						{#each form?.errors as formError}
-							<p class="text-center text-red-500">{formError}</p>
+							<div class="alert-message">
+								<h3 class="h3">ERROR:</h3>
+								<p>{formError}</p>
+							</div>
 						{/each}
-					</div>
+					</aside>
 				{/if}
+				<h1 class="text-center text-xl font-bold leading-tight tracking-tight md:text-2xl">
+					Make an Account
+				</h1>
 				<form class="space-y-4 md:space-y-6" method="POST">
-					<div>
-						<label
-							for="username"
-							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Username</label
-						>
+					<label for="username"
+						><span>Username</span>
 						<input
+							class="input"
 							type="text"
 							name="username"
 							id="username"
-							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-							placeholder="Enter your username"
+							placeholder="FooMcSmoo"
 						/>
-					</div>
-					<div>
-						<label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-							>Email</label
-						>
+					</label>
+					<label for="email"
+						><span>Email</span>
+						<input class="input" type="email" name="email" id="email" placeholder="email@foo.com" />
+					</label>
+					<label for="password"
+						><span>Password</span>
 						<input
-							type="email"
-							name="email"
-							id="email"
-							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-							placeholder="name@company.com"
-						/>
-					</div>
-					<div>
-						<label
-							for="password"
-							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Password</label
-						>
-						<input
+							class="input"
 							type="password"
 							name="password"
 							id="password"
 							placeholder="••••••••"
-							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-red-500 focus:ring-red-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
 						/>
-					</div>
+					</label>
 					<button
 						type="submit"
-						class="w-full rounded-lg bg-yellow-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
+						class="btn variant-soft w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium focus:outline-none focus:ring-4"
 					>
-						Sign up
+						Sign Up
 					</button>
 					<p class="text-sm font-light text-gray-500 dark:text-gray-400">
 						Already have an account? <a
