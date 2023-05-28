@@ -7,18 +7,6 @@
 </script>
 
 <div class="flex flex-col">
-	{#if data.props.sameUser}
-		<nav class="bg-blue-300">
-			<a href="/logout">Logout</a>
-			<a href="/dashboard">Edit Profile</a>
-		</nav>
-	{:else}
-		<nav>
-			<a href="/login">Login</a>
-			<a href="/register">Register</a>
-		</nav>
-	{/if}
-
 	<section class="">
 		<img
 			class="h-32 w-32 rounded-full border-4 border-black sm:h-48 sm:w-48"
@@ -33,8 +21,8 @@
 			<button
 				on:click={async () => {
 					console.log('CLICKED');
-                    const res = await hoshiiClient.GetWishlist()
-                    console.log(res)
+					const res = await hoshiiClient.GetWishlist();
+					console.log(res);
 				}}
 				class=" rounded bg-blue-300 px-4 py-2 font-bold text-white hover:bg-blue-400"
 				>GET WISHLIST</button

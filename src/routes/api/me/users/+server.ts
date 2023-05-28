@@ -1,10 +1,10 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import type { SessionData } from '$lib/sessions/redis';
+import { SessionStore, type SessionData } from '$lib/sessions/redis';
 import prisma from '$lib/prisma';
 
 export const GET = (async ({ request, cookies, locals }) => {
-	const sessionUser: SessionData = locals.user;
+	const sessionUser: SessionData = SessionStore.hgetall(cookies.get('sessionId') as string)
 	const dbUser = await prisma.user.findUnique({
 		where: {
 			email: sessionUser.email

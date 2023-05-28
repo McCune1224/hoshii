@@ -1,20 +1,6 @@
 <script lang="ts">
-	import { AppBar, LightSwitch } from '@skeletonlabs/skeleton';
 </script>
 
-<AppBar>
-	<svelte:fragment slot="lead"><p class="text-4xl sm:text-6xl">🌟</p></svelte:fragment>
-	<h4 class="text-4xl sm:text-6xl">Hoshii</h4>
-	<svelte:fragment slot="trail">
-		<button type="button" class="btn variant-filled">Expore</button>
-		<a href="/login">
-			<button type="button" class="btn variant-filled">Log In</button>
-		</a>
-        <a href="/signup">
-		<button type="button" class="btn variant-filled-secondary">Sign Up</button></a>
-		<LightSwitch />
-	</svelte:fragment>
-</AppBar>
 <main class="">
 	<section class="py-16">
 		<div class="container mx-auto px-4 text-center">
