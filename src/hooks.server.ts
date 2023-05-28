@@ -10,7 +10,7 @@ export const handle = (async ({ event, resolve }) => {
 		event.locals.activeUser = await SessionStore.hgetall(seshID as string);
 	}
 	// Auth Middleware for API routes basically...
-	if (event.url.pathname.includes('/api')) {
+	if (event.url.pathname.includes('/api/')) {
 		console.log('PROTECTED API ROUTE: ', event.url.pathname);
 		const authHeader = event.request.headers.get('Authorization');
 		console.log('AUTH HEADER: ', authHeader);
