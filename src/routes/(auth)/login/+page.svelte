@@ -42,7 +42,7 @@
 
 					<button
 						type="submit"
-						class="btn variant-soft w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium focus:outline-none focus:ring-4"
+						class="btn variant-filled-secondary w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium focus:outline-none focus:ring-4"
 					>
 						Log in
 					</button>

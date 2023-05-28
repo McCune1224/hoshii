@@ -3,18 +3,16 @@ import type { RequestHandler } from './$types';
 import { SessionStore, type SessionData } from '$lib/sessions/redis';
 import prisma from '$lib/prisma';
 
-export const GET = (async ({ request, cookies, locals }) => {
-	const sessionUser: SessionData = SessionStore.hgetall(cookies.get('sessionId') as string)
+export const GET = (async ({ request,  locals }) => {
+
 	const dbUser = await prisma.user.findUnique({
 		where: {
-			email: sessionUser.email
+			id: locals.activeUser.userId
 		}
 	});
+
 	if (!dbUser) {
-		return json({
-			error: 'User not found',
-			status: 404
-		});
+		return json({ error: { status: 404, message: 'User not found' } });
 	}
 
 	return json({
