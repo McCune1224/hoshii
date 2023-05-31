@@ -8,7 +8,8 @@ export const SessionStore = new Redis(SESSION_DB);
 */
 
 export type SessionData = {
-	userId: string;
+    // Redis stores verything as strings so for userID needs to be able to convert between the two without ORM's (Prisma) being cranky
+	userId: string | number;
 	email: string;
 	username: string;
 };

@@ -24,7 +24,7 @@ export const GET = (async ({ request, params, locals, url }) => {
 	const wishlists = await prisma.wishlist.findMany({
 		where: {
 			user: {
-				id: locals.activeUser.userId
+				id: locals.activeUser.userId as number
 			}
 		},
 		skip: offset,

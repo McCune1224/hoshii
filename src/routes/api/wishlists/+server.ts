@@ -1,17 +1,19 @@
 import prisma from '$lib/prisma';
 import { json, type HandleServerError, type RequestHandler } from '@sveltejs/kit';
 
-
 export const POST = (async ({ request, locals }) => {
     const body: WishlistPostBody = await request.json();
-    if (!body) {
-        return json({ message: 'Missing body' }, { status: 400 });
+    if (!body || body.name === undefined) {
+        return json({ message: 'Missing required params' }, { status: 400 });
     }
-    if (body.name === undefined) {
-        return json({ message: 'Missing name' }, { status: 400 });
-    }
-
+    const dbUser = await prisma.user.findUnique({
+        where: {
+            id: locals.activeUser.userId as number
+        }
+    });
+    console.log(dbUser)
     try {
+        console.log(locals.activeUser.userId);
         //check if wishlist with name already exists
         const existingWishlist = await prisma.wishlist.findFirst({
             where: {
@@ -27,13 +29,13 @@ export const POST = (async ({ request, locals }) => {
                 name: body.name,
                 user: {
                     connect: {
-                        id: locals.activeUser.userId
+                        id: dbUser?.id as number
                     }
                 },
                 items: {
                     create: {
-                        name: 'My First Item!',
-                        description: 'This is my first item!'
+                        name: 'First Item',
+                        description: 'My first item is cool!'
                     }
                 }
             }
