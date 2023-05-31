@@ -1,4 +1,3 @@
-import { HoshiiAPI } from '$lib/api/client';
 import { SessionStore, type SessionData } from '$lib/sessions/redis';
 import { json, type Handle } from '@sveltejs/kit';
 
@@ -8,12 +7,11 @@ export const handle = (async ({ event, resolve }) => {
 
 	if (seshID && event.locals.activeUser === undefined) {
 		event.locals.activeUser = await SessionStore.hgetall(seshID as string);
+		event.locals.activeUser.token = seshID;
 	}
 	// Auth Middleware for API routes basically...
 	if (event.url.pathname.includes('/api/')) {
-		console.log('PROTECTED API ROUTE: ', event.url.pathname);
 		const authHeader = event.request.headers.get('Authorization');
-		console.log('AUTH HEADER: ', authHeader);
 		if (!authHeader) {
 			return json(
 				{
@@ -40,6 +38,7 @@ export const handle = (async ({ event, resolve }) => {
 			}
 
 			event.locals.activeUser = sessionData;
+			event.locals.activeUser.token = token;
 		} catch (error: any) {
 			return json(
 				{

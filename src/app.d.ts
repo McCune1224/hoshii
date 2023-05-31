@@ -7,7 +7,7 @@ import type { SessionData } from '$lib/sessions/redis';
 declare global {
 	namespace App {
 		interface Locals {
-			activeUser: SessionData;
+			activeUser: SessionData & { token: string };
 		}
 		// interface Error {}
 		// interface Locals {}

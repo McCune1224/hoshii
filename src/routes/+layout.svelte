@@ -10,12 +10,22 @@
 	// Finally, your application's global stylesheet (sometimes labeled 'app.css')
 	import '../app.postcss';
 
-	import { AppBar, Avatar, LightSwitch } from '@skeletonlabs/skeleton';
+	import { AppBar, Avatar, LightSwitch, Modal, type ModalComponent } from '@skeletonlabs/skeleton';
 	import type { LayoutServerData } from './$types';
 	import { page } from '$app/stores';
 	import hoshii_logo from '../assets/hoshii_logo.png';
+	import ModalUpdateProfile from '$lib/components/ModalUpdateProfile.svelte';
+
+	const modalComponentRegistry: Record<string, ModalComponent> = {
+		modalUpdateProfile: {
+			ref: ModalUpdateProfile,
+			props: {},
+			slot: '<p>Modal Update Profile Slot</p>'
+		}
+	};
 </script>
 
+<Modal components={modalComponentRegistry} />
 <AppBar>
 	<svelte:fragment slot="lead">
 		<a class="flex flex-row items-center gap-4" href="/">

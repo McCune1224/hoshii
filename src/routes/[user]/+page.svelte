@@ -1,14 +1,49 @@
 <script lang="ts">
 	import { HoshiiAPI } from '$lib/api/client';
 	import type { PageServerData } from './$types';
-	import { page } from '$app/stores';
+	import { modalStore, type ModalSettings, ProgressRadial } from '@skeletonlabs/skeleton';
+	import { onMount } from 'svelte';
 
 	export let data: PageServerData;
+	let hoshiiClient = new HoshiiAPI(data.user.token);
+	let userWishlistResponse: MeWishlistsResponse;
+	const profileModal: ModalSettings = {
+		title: 'Update Profile',
+		body: '',
+		type: 'component',
+		component: 'modalUpdateProfile'
+	};
+
+	onMount(async () => {
+		try {
+			userWishlistResponse = await hoshiiClient.GetMeWishlists();
+			console.log(userWishlistResponse);
+		} catch (e) {}
+	});
 </script>
 
 <div class="flex flex-col">
 	<section class="">
 		<h1 class="text-6xl sm:text-8xl">Greetings {data.user.username}</h1>
 	</section>
-	<section>Wishlists</section>
+	<section>
+		Wishlists
+		<button
+			on:click={async () => {
+				modalStore.trigger(profileModal);
+			}}
+			class="btn variant-filled-secondary"
+		>
+			Update Profile
+		</button>
+		{#if userWishlistResponse}
+			{#each userWishlistResponse.wishlists as wishlist}
+				<div class="flex flex-col">
+					<h1 class="text-4xl sm:text-6xl">{wishlist.id}</h1>
+				</div>
+			{/each}
+		{:else}
+			<ProgressRadial />
+		{/if}
+	</section>
 </div>

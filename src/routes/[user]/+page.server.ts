@@ -1,8 +1,8 @@
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ params, locals }) => {
+export const load = (async ({ cookies, params, locals }) => {
 	const userEndpoint = params.user;
-	const user = await locals.activeUser;
+	const user = locals.activeUser;
 	return {
 		user: user,
 		sameUser: user.username === userEndpoint

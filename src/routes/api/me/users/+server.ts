@@ -21,6 +21,6 @@ export const GET = (async ({ request,  locals }) => {
 			name: dbUser.name,
 			email: dbUser.email,
 			bio: dbUser.bio || undefined
-		} as MeUserResponse
+		} as UserResponse
 	});
 }) satisfies RequestHandler;

@@ -1,31 +1,40 @@
-// Strip prisma user object type of password, createdAt, updatedAt,
-
-interface MeUserResponse {
-	id: string;
+interface UserResponse {
+	id: number;
 	email: string;
 	name: string;
 	bio?: string;
 }
 
-interface WishlistResponse {
-	id: string;
+interface MeWishlistsResponse {
+	offset: number;
+	limit: number;
+	next?: string;
+	wishlists: SimpleWishlist[];
+}
+
+interface SimpleWishlist {
+	id: number;
 	name: string;
-	userID: string;
-	categoryID: string;
+	userID: number;
+	categoryID: number;
 }
 
 interface ItemsResponse {
-	id: string;
+	id: number;
 	name: string;
 	description?: string;
 	link?: string;
 	image?: string;
 	price?: number;
-	wishlistID: string;
-	categoryID: string;
+	wishlistID: number;
+	categoryID: number;
 }
 
-interface CategoryResponse {
-	id: string;
+interface SimpleItemsResponse {
+	id: number;
+}
+
+interface SimpleWishlist {
+	id: number;
 	name: string;
 }
