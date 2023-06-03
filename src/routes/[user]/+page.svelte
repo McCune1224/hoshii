@@ -18,7 +18,9 @@
 		try {
 			userWishlistResponse = await hoshiiClient.GetMeWishlists();
 			console.log(userWishlistResponse);
-		} catch (e) {}
+		} catch (e) {
+			console.log(e);
+		}
 	});
 </script>
 
@@ -37,12 +39,22 @@
 			Update Profile
 		</button>
 		{#if userWishlistResponse}
-			{#each userWishlistResponse.wishlists as wishlist}
-				<div class="flex flex-col">
-					<h1 class="text-4xl sm:text-6xl">{wishlist.id}</h1>
-                    <h3 class="text-4xl sm:text-6xl">{wishlist.name}</h3>
-				</div>
-			{/each}
+			<div class="border-2 border-primary-200">
+				{#each userWishlistResponse.wishlists as wishlist}
+					<div class="flex flex-col">
+						<h1 class="text-4xl sm:text-6xl">{wishlist.id}</h1>
+						<h3 class="text-4xl sm:text-6xl">{wishlist.name}</h3>
+						<button
+							class="btn variant-soft"
+							on:click={() => {
+								console.log('Item add/update invoke for wishlist: ' + wishlist.name);
+							}}
+						>
+							Update Wishlist
+						</button>
+					</div>
+				{/each}
+			</div>
 		{:else}
 			<ProgressRadial />
 		{/if}

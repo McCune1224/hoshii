@@ -11,7 +11,6 @@ export const POST = (async ({ request, locals }) => {
             id: locals.activeUser.userId as number
         }
     });
-    console.log(dbUser)
     try {
         console.log(locals.activeUser.userId);
         //check if wishlist with name already exists
