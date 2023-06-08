@@ -1,7 +1,12 @@
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
+	if (locals.activeUser) {
+		return {
+			activeUser: locals.activeUser
+		};
+	}
 	return {
-		activeUser: locals.activeUser
+		activeUser: undefined
 	};
 }) satisfies LayoutServerLoad;

@@ -5,7 +5,11 @@
 	import { onMount } from 'svelte';
 
 	export let data: PageServerData;
-	let hoshiiClient = new HoshiiAPI(data.user.token);
+	export const { user } = data;
+	let hoshiiClient: HoshiiAPI | undefined;
+	if (user) {
+		let hoshiiClient = new HoshiiAPI(data.user.token);
+	}
 	let userWishlistResponse: MeWishlistsResponse;
 	const profileModal: ModalSettings = {
 		title: 'Update Profile',
@@ -15,18 +19,20 @@
 	};
 
 	onMount(async () => {
-		try {
-			userWishlistResponse = await hoshiiClient.GetMeWishlists();
-			console.log(userWishlistResponse);
-		} catch (e) {
-			console.log(e);
+		if (hoshiiClient) {
+			try {
+				userWishlistResponse = await hoshiiClient.GetMeWishlists();
+				console.log(userWishlistResponse);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	});
 </script>
 
 <div class="flex flex-col">
 	<section class="">
-		<h1 class="text-6xl sm:text-8xl">Greetings {data.user.username}</h1>
+		<h1 class="text-6xl sm:text-8xl">{data.userEndpoint}</h1>
 	</section>
 	<section>
 		Wishlists

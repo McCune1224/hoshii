@@ -1,4 +1,4 @@
-import { SessionStore, type SessionData } from '$lib/sessions/redis';
+import { SessionStore } from '$lib/sessions/redis';
 import { v4 as uuid } from 'uuid';
 import type { PageServerLoad, Actions } from './$types';
 import { ValidateFormData } from '$lib/utils/forms';
@@ -9,27 +9,20 @@ import prisma from '$lib/prisma';
 /** 7 Days (measured in seconds) */
 const SESSION_EXPIRY = 60 * 60 * 24 * 7;
 
-export const load = (async ({ cookies, url }) => {
-	// Check if session exists for user
-	const redirectLocation = url.searchParams.get('redirect');
+export const load = (async ({ cookies, locals, url }) => {
+	if (locals.activeUser) {
+		throw redirect(301, `/${locals.activeUser.username}`);
+	}
 	const sessionCookieID = cookies.get('sessionId');
 	if (!sessionCookieID) {
-		// No session, proceed with normal client-side rendering
 		return;
 	}
-	// Update and extend current session
+
 	const expireUpdateOk = await SessionStore.expire(sessionCookieID, SESSION_EXPIRY);
 	if (!expireUpdateOk) {
-		// Session expired
-		cookies.set('sessionId', '', {
-			path: '/',
-			maxAge: 0
-		});
+		cookies.delete('sessionId');
 		return;
 	}
-	//redirect to user page
-	const seshUser: SessionData = await SessionStore.hgetall(sessionCookieID);
-	throw redirect(301, `/${seshUser?.username}`);
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -76,7 +69,7 @@ export const actions = {
 			throw error(500, 'Failed to create session');
 		}
 
-        // setting session includes store session in redis, and setting cookie, and for the app to quickly use set in locals
+		// setting session includes store session in redis, and setting cookie, and for the app to quickly use set in locals
 		await SessionStore.expire(sessionId, SESSION_EXPIRY);
 		cookies.set('sessionId', sessionId, {
 			path: '/',

@@ -39,8 +39,17 @@
 	};
 
 	let comboboxValue: string;
+	let avatarInitials: string;
 
-	let activeUser = $page.data.activeUser;
+	export let data: LayoutServerData;
+
+	const { activeUser } = data;
+	if (activeUser) {
+		avatarInitials = activeUser.username[0];
+	} else {
+		avatarInitials = '';
+	}
+
 	const popupCombobox: PopupSettings = {
 		event: 'focus-click',
 		target: 'popupCombobox',
@@ -60,34 +69,30 @@
 			></svelte:fragment
 		>
 		<svelte:fragment slot="trail">
-			<button class="" use:popup={popupCombobox}>
-				<span>
-					<Avatar src="invalid-image.jpg" initials={$page.data.activeUser.username[0]} />
-					<div class="card w-48 py-2 shadow-xl" data-popup="popupCombobox">
-						<ListBox rounded="rounded-none">
-							<ListBoxItem bind:group={comboboxValue} name="medium" value="all"
-								><a href="/explore">Explore</a></ListBoxItem
-							>
-
-							{#if !activeUser}
-								<a href="/login">
-									<button type="button" class="btn variant-filled">Log In</button>
-								</a>
-								<a href="/signup">
-									<button type="button" class="btn variant-filled-secondary">Sign Up</button></a
+			{#if !activeUser}
+				<a href="/login">
+					<button type="button" class="btn variant-filled">Log In</button>
+				</a>
+				<a href="/signup">
+					<button type="button" class="btn variant-filled-secondary">Sign Up</button></a
+				>
+			{:else}
+				<button class="" use:popup={popupCombobox}>
+					<Avatar src="invalid-image.jpg" initials={avatarInitials} />
+					<span>
+						<div class="card w-48 py-2 shadow-xl" data-popup="popupCombobox">
+							<ListBox rounded="rounded-none">
+								<ListBoxItem bind:group={comboboxValue} name="profile" value="profile">
+									<a href={`/${activeUser.username}`}>Profile</a></ListBoxItem
 								>
-							{:else}
-								<ListBoxItem bind:group={comboboxValue} name="medium" value="television">
-									<a href={`/${$page.data.activeUser.username}`}>Profile</a></ListBoxItem
-								>
-								<ListBoxItem bind:group={comboboxValue} name="medium" value="books">
+								<ListBoxItem bind:group={comboboxValue} name="logout" value="logout">
 									<a href="/logout">Logout</a></ListBoxItem
 								>
-							{/if}
-						</ListBox>
-					</div>
-				</span>
-			</button>
+							</ListBox>
+						</div>
+					</span>
+				</button>
+			{/if}
 			<LightSwitch />
 		</svelte:fragment>
 	</AppBar>
