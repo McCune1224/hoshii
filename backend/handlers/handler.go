@@ -10,7 +10,9 @@ import (
 
 func notImplemented(c *fiber.Ctx) error {
 	message := fmt.Sprintf("%s Not implemented yet", c.Path())
-	return c.SendString(message)
+	return c.JSON(fiber.Map{
+        "message": message,
+    })
 }
 
 // Universal handler struct (ideally handled by dependency injection besides the passed db)
@@ -32,10 +34,19 @@ func NewHandler(db *gorm.DB, us store.UserStore, ws store.WishlistStore) *Handle
 // Tie all routes from fiber to this handler
 func (h *Handler) AddRoutes(app *fiber.App) {
 	api := app.Group("/api")
+
+	// Me routes
+	me := api.Group("/me")
+	me.Get("/users", notImplemented)
+	me.Get("/wishlists", notImplemented)
+
 	// User routes
 	users := api.Group("/users")
-	users.Get("/", notImplemented)
-
+	users.Get("/:id", h.GetUser)
+	users.Get("/", h.GetUsers)
+	users.Post("/", h.CreateUser)
+	users.Put("/:id", h.UpdateUser)
+	users.Delete("/:id", h.DeleteUser)
 	// Wishlist routes
 	wishlists := api.Group("/wishlists")
 	wishlists.Get("/", notImplemented)
