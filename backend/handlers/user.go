@@ -42,7 +42,7 @@ func (h *Handler) GetUsers(c *fiber.Ctx) error {
 
 func (h *Handler) CreateUser(c *fiber.Ctx) error {
 	newUserReq := &struct {
-		Name     string `json:"name"`
+		Username string `json:"username"`
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}{}
@@ -54,7 +54,6 @@ func (h *Handler) CreateUser(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"message": newUserReq,
-
 	})
 }
 
