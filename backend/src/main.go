@@ -8,7 +8,6 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/mccune1224/hoshii/handlers"
 	"github.com/mccune1224/hoshii/store"
-	"github.com/mccune1224/hoshii/types"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -20,10 +19,10 @@ func main() {
 	app.Use(logger.New())
 
 	psqlDb, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
-	psqlDb.AutoMigrate(
-		&types.User{},
-		&types.Wishlist{},
-	)
+	// psqlDb.AutoMigrate(
+	// 	&types.User{},
+	// 	&types.Wishlist{},
+	// )
 	if err != nil {
 		panic(err)
 	}

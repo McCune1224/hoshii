@@ -63,6 +63,37 @@ func (h *Handler) UpdateUser(c *fiber.Ctx) error {
 	})
 }
 
+func (h *Handler) LoginUser(c *fiber.Ctx) error {
+	userLoginReq := struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}{}
+	if err := c.BodyParser(&userLoginReq); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"error": fmt.Sprintf("failed to parse request body\n%s", err.Error()),
+		})
+	}
+	return c.JSON(fiber.Map{
+		"message": userLoginReq,
+	})
+}
+
+func (h *Handler) RegisterUser(c *fiber.Ctx) error {
+	userRegisterReq := struct {
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}{}
+	if err := c.BodyParser(&userRegisterReq); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"error": fmt.Sprintf("failed to parse request body\n%s", err.Error()),
+		})
+	}
+	return c.JSON(fiber.Map{
+		"message": userRegisterReq,
+	})
+}
+
 func (h *Handler) DeleteUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "DELETE USER HIT",
