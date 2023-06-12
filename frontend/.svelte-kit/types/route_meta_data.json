@@ -1,0 +1,40 @@
+{
+	"/": [
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/api": [
+		"src/routes/api/+server.ts"
+	],
+	"/api/me/users": [
+		"src/routes/api/me/users/+server.ts"
+	],
+	"/api/me/wishlists": [
+		"src/routes/api/me/wishlists/+server.ts"
+	],
+	"/api/wishlists": [
+		"src/routes/api/wishlists/+server.ts"
+	],
+	"/api/wishlists/[id]": [
+		"src/routes/api/wishlists/[id]/+server.ts"
+	],
+	"/api/wishlists/[id]/items": [
+		"src/routes/api/wishlists/[id]/items/+server.ts"
+	],
+	"/(auth)/login": [
+		"src/routes/(auth)/login/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(auth)/logout": [
+		"src/routes/(auth)/logout/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/(auth)/signup": [
+		"src/routes/(auth)/signup/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/[user]": [
+		"src/routes/[user]/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	]
+}
