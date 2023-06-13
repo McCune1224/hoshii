@@ -4,13 +4,14 @@ import (
 	"gorm.io/gorm"
 )
 
+// User as represented in the database
 type User struct {
 	gorm.Model
-	Username    string `json:"name"`
-	DisplayName string `json:"display_name"`
-	Email       string `json:"email"`
-	Password    string `json:"password"`
-	Bio         string `json:"bio"`
+	Username    string `gorm:"uniqueIndex;type:varchar(32)"`
+	DisplayName string `gorm:"type:varchar(100)"`
+	Email       string `gorm:"uniqueIndex;type:varchar(100)"`
+	Password    string
+	Bio         string
 }
 
 func (u *User) ToResponse() *UserResponse {

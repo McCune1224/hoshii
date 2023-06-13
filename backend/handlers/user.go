@@ -16,7 +16,7 @@ func (h *Handler) GetUser(c *fiber.Ctx) error {
 		})
 	}
 
-	dbUser, err := h.UserStore.Get(id)
+	dbUser, err := h.UserStore.GetById(id)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(404).JSON(fiber.Map{
@@ -60,37 +60,6 @@ func (h *Handler) CreateUser(c *fiber.Ctx) error {
 func (h *Handler) UpdateUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "UPDATE USER HIT",
-	})
-}
-
-func (h *Handler) LoginUser(c *fiber.Ctx) error {
-	userLoginReq := struct {
-		Username string `json:"username"`
-		Password string `json:"password"`
-	}{}
-	if err := c.BodyParser(&userLoginReq); err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"error": fmt.Sprintf("failed to parse request body\n%s", err.Error()),
-		})
-	}
-	return c.JSON(fiber.Map{
-		"message": userLoginReq,
-	})
-}
-
-func (h *Handler) RegisterUser(c *fiber.Ctx) error {
-	userRegisterReq := struct {
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}{}
-	if err := c.BodyParser(&userRegisterReq); err != nil {
-		return c.Status(400).JSON(fiber.Map{
-			"error": fmt.Sprintf("failed to parse request body\n%s", err.Error()),
-		})
-	}
-	return c.JSON(fiber.Map{
-		"message": userRegisterReq,
 	})
 }
 

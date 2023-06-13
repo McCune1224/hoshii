@@ -3,9 +3,12 @@ package handlers
 import (
 	"fmt"
 	"os"
+	"time"
 
+	"github.com/go-playground/validator/v10"
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/mccune1224/hoshii/store"
 	"gorm.io/gorm"
 )
@@ -23,28 +26,37 @@ type Handler struct {
 	db            *gorm.DB
 	UserStore     store.UserStore
 	WishlistStore store.WishlistStore
+	Validator     *validator.Validate
 }
 
 func NewHandler(db *gorm.DB, us store.UserStore, ws store.WishlistStore) *Handler {
+	validate := validator.New()
 	return &Handler{
 		db:            db,
 		UserStore:     us,
 		WishlistStore: ws,
+		Validator:     validate,
 	}
 }
 
 // Tie all routes from fiber to this handler
 func (h *Handler) AddRoutes(app *fiber.App) {
-	api := app.Group("/api")
-
-	app.Use(jwtware.New(jwtware.Config{
-		SigningKey: jwtware.SigningKey{Key: []byte(os.Getenv("JWT_SECRET"))},
+	// Any and all non-authed routes should be rate limited to prevent abuse of the API
+	// Auth routes
+	auth := app.Group("/auth")
+	auth.Use(limiter.New(limiter.Config{
+		Max:               10,
+		Expiration:        60 * time.Second,
+		LimiterMiddleware: limiter.SlidingWindow{},
 	}))
 
-	// Auth routes
-	auth := api.Group("/auth")
 	auth.Post("/login", h.LoginUser)
 	auth.Post("/register", h.RegisterUser)
+
+	api := app.Group("/api")
+	api.Use(jwtware.New(jwtware.Config{
+		SigningKey: jwtware.SigningKey{Key: []byte(os.Getenv("JWT_SECRET"))},
+	}))
 
 	// Me routes
 	me := api.Group("/me")
