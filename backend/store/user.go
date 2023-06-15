@@ -20,15 +20,6 @@ type PostgreUserStore struct {
 	db *gorm.DB
 }
 
-// GetByEmail implements UserStore.
-func (s *PostgreUserStore) GetByEmail(email string) (*types.User, error) {
-	var user types.User
-	if err := s.db.First(&user, email).Error; err != nil {
-		return nil, err
-	}
-	return &user, nil
-}
-
 func NewPostgreUserStore(db *gorm.DB) *PostgreUserStore {
 	return &PostgreUserStore{db}
 }
@@ -37,6 +28,16 @@ func NewPostgreUserStore(db *gorm.DB) *PostgreUserStore {
 func (s *PostgreUserStore) GetById(id int) (*types.User, error) {
 	var user types.User
 	if err := s.db.First(&user, id).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+// GetByEmail implements UserStore.
+func (s *PostgreUserStore) GetByEmail(email string) (*types.User, error) {
+	var user types.User
+	if err := s.db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

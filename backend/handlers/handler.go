@@ -30,20 +30,21 @@ type Handler struct {
 }
 
 func NewHandler(db *gorm.DB, us store.UserStore, ws store.WishlistStore) *Handler {
-	validate := validator.New()
 	return &Handler{
 		db:            db,
 		UserStore:     us,
 		WishlistStore: ws,
-		Validator:     validate,
+		Validator:     validator.New(),
 	}
 }
 
 // Tie all routes from fiber to this handler
 func (h *Handler) AddRoutes(app *fiber.App) {
-	// Any and all non-authed routes should be rate limited to prevent abuse of the API
 	// Auth routes
-	auth := app.Group("/auth")
+	api := app.Group("/api")
+
+	auth := api.Group("/auth")
+	// Any and all non-authed routes should be rate limited to prevent abuse of the API
 	auth.Use(limiter.New(limiter.Config{
 		Max:               10,
 		Expiration:        60 * time.Second,
@@ -53,11 +54,9 @@ func (h *Handler) AddRoutes(app *fiber.App) {
 	auth.Post("/login", h.LoginUser)
 	auth.Post("/register", h.RegisterUser)
 
-	api := app.Group("/api")
 	api.Use(jwtware.New(jwtware.Config{
 		SigningKey: jwtware.SigningKey{Key: []byte(os.Getenv("JWT_SECRET"))},
 	}))
-
 	// Me routes
 	me := api.Group("/me")
 	me.Get("/users", notImplemented)
